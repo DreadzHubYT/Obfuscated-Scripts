@@ -1,0 +1,365 @@
+-- Pepsi Was Here [Petsi X]
+local petsiversion = "0.10"
+local Library = loadstring(game:GetObjects("rbxassetid://7657867786")[1].Source)("Pepsi's UI Library")
+local Wait = Library.subs.Wait
+local Players = game:GetService("Players")
+local LP = Players.LocalPlayer or Library.LP
+if shared.debugmode == 2 then
+	local pc = pcall
+	function pcall(...)
+		local t = {pc(...)}
+		if t[2] and not t[1] then
+			warn(t[2])
+		end
+		return unpack(t, 2)
+	end
+end
+local GameData, GetCoins, GetOrbs, CollectOrb, SelectCoin, GetEquippedPets, GetSaveData, GetLootBags, CollectLootBag, OpenGui, ToggleHoverBoard = {}, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil
+do
+	local Scripts = LP:WaitForChild("PlayerScripts"):WaitForChild("Scripts")
+	shared.Scripts = Scripts
+	local GameScripts = Scripts:WaitForChild("Game")
+	shared.GameScripts = GameScripts
+	local syn_secure_call = (syn and syn.secure_call) or function(f, y, ...)
+		return setfenv(function(...)
+			return f(...)
+		end, (y and y.Env) or (getrenv or getfenv)(1))(...)
+	end
+	local MiscScripts = GameScripts:WaitForChild("Misc")
+	shared.MiscScripts = GameScripts
+	local common_script = MiscScripts:WaitForChild("Upgrade Machine Animation")
+	local debug_info, GetMeta = debug.info, nil
+	function GetMeta(t)
+		local cache = setmetatable({}, {
+			__mode = "kv"
+		})
+		return {
+			__index = function(_, k)
+				if rawequal(k, "__cache") then
+					return cache
+				end
+				local thing = rawget(t, k)
+				if thing then
+					do
+						local thing = cache[thing]
+						if thing then
+							return thing
+						end
+					end
+					local type_thing = type(thing)
+					if type_thing == "table" then
+						local proxy = setmetatable({
+							__self = thing
+						}, GetMeta(thing))
+						cache[thing] = proxy
+						return proxy
+					elseif type_thing == "function" then
+						local Script = (function()
+							local q, e = pcall(function()
+								return rawget(getfenv(thing), "script")
+							end)
+							return (q and e and typeof(e) == "Instance" and e:IsA("LuaSourceContainer") and e) or common_script
+						end)()
+						local proxy = nil
+						if shared.debugmode == 4 or (shared.secure_mode and "Beta mode; expect bugs/missing features") then
+							local call_args = {
+								Script = Script,
+								LineNumber = debug_info(thing, "l"),
+								Environment = (function()
+									local q, e = pcall(getsenv, Script)
+									return (q and e) or setmetatable({
+										script = Script
+									}, {
+										__index = getrenv()
+									})
+								end)()
+							}
+							proxy = setmetatable({
+								__self = thing,
+								__args = call_args
+							}, {
+								__call = function(_, ...)
+									return syn_secure_call(thing, call_args, ...)
+								end
+							})
+							cache[thing] = proxy
+						else
+							proxy = setmetatable({
+								__self = thing
+							}, {
+								__call = function(_, ...)
+									return thing(...)
+								end
+							})
+						end
+						return proxy
+					end
+				end
+				return thing
+			end
+		}
+	end
+	do
+		local t = assert(debug.getupvalues(assert(rawget(getsenv(common_script), "UseAnimation"), "GameScripts.UpgradeMachineAnimation.UseAnimation missing?"))[2], "GameData table not found")
+		GameData.__self = t
+		shared.GameData = setmetatable(GameData, GetMeta(t))
+		if GameData then
+			local LootBags = GameData.Things.Lootbags
+			function GetLootBags()
+				return LootBags:GetChildren()
+			end
+			local CollectLootR = assert(rawget(getsenv(GameScripts:WaitForChild("Lootbags")), "Collect"), "Couldn't get lootbag data")
+			local CollectLootT = setmetatable({}, GetMeta({
+				SpoofMe = CollectLootR
+			})).SpoofMe
+			function CollectLootBag(...)
+				return CollectLootT(...)
+			end
+		end
+	end
+	do
+		local opengui = assert(rawget(getsenv(GameScripts:WaitForChild("Misc"):WaitForChild("Open Gui Pads")), "OpenGui"), "Couldn't get OpenGui function")
+		function OpenGui(...)
+			return opengui(...)
+		end
+		shared.OpenGui = OpenGui
+	end
+	do
+		local debug_getupvalues = debug.getupvalues
+		do
+			local CollectOrbR = assert(rawget(getsenv(GameScripts:WaitForChild("Orbs")), "Collect"), "Couldn't get orb data")
+			local CollectOrbT = setmetatable({}, GetMeta({
+				SpoofMe = CollectOrbR
+			})).SpoofMe
+			function CollectOrb(...)
+				return CollectOrbT(...)
+			end
+			function GetOrbs()
+				return debug_getupvalues(CollectOrbR)[1]
+			end
+		end
+		do
+			local ToggleR = assert(rawget(getsenv(GameScripts:WaitForChild("Hoverboard")), "Toggle"), "Couldn't get hoverboard data")
+			local ToggleT = setmetatable({}, GetMeta({
+				SpoofMe = ToggleR
+			})).SpoofMe
+			function ToggleHoverBoard(...)
+				return ToggleT(...)
+			end
+		end
+		local invokecoins = assert(rawget(getsenv(GameScripts:WaitForChild("Coins")), "InvokeCoins"), "Couldn't get coin data")
+		function GetCoins()
+			return debug_getupvalues(invokecoins)[2]
+		end
+		shared.GetCoins = GetCoins
+		local NetworkUpdate = assert(rawget(getsenv(GameScripts:WaitForChild("Pets")), "NetworkUpdate"), "Couldn't get Pets.NetworkUpdate")
+		local GetEquippedPetsT = GameData.PetCmds.GetEquipped
+		function GetEquippedPets(...)
+			local pets = {}
+			local all = debug_getupvalues(NetworkUpdate)[1]
+			for slot, dat in next, GetEquippedPetsT(...) do
+				dat = all[rawget(dat, "uid")] or dat
+				pets[slot] = setmetatable({
+					__self = dat
+				}, GetMeta(dat))
+			end
+			return pets
+		end
+		function shared.GetEquippedPets(...)
+			return GetEquippedPets(...)
+		end
+		pcall(function()
+			--local SaveData = rawget(debug.getupvalues(rawget(getsenv(game:GetService("ReplicatedStorage"):WaitForChild("Framework", 6):WaitForChild("Modules", 5):WaitForChild("Client", 4):WaitForChild("4 | Save", 3)), "ProcessChanges"))[1], LP) -- Directory changed.
+			local SaveData = rawget(debug.getupvalues(rawget(getsenv(game:GetService("ReplicatedStorage"):WaitForChild("Framework", 6):WaitForChild("Client", 4):WaitForChild("4 | Save", 3)), "ProcessChanges"))[1], LP)
+			do
+				local t = rawget(SaveData, "save")
+				local Data = t and setmetatable({
+					__self = t
+				}, GetMeta(t))
+				function GetSaveData()
+					if Data then
+					else
+						t = rawget(SaveData, "save")
+						Data = t and setmetatable({
+							__self = t
+						}, GetMeta(t))
+					end
+					return Data
+				end
+			end
+			shared.GetSaveData = GetSaveData
+		end)
+	end
+	local SelectCoinT = setmetatable({}, GetMeta({
+		SpoofMe = assert(rawget(getsenv(assert(GameScripts:WaitForChild("Select Coins"), "GameScripts.SelectCoins mising?")), "SelectCoin"), "GameScripts.SelectCoins.SelectCoin missing?")
+	})).SpoofMe
+	function SelectCoin(...)
+		return SelectCoinT(...)
+	end
+	shared.SelectCoin = SelectCoin
+end
+local Libraryflags = Library.flags
+local CoinsFolder = workspace:WaitForChild("__THINGS"):WaitForChild("Coins")
+local GetSortedCoins, GetUnlockedCoins, FindFirstChild, BuyEgg, NetworkInvoke = nil, nil, nil, nil, nil
+do
+	local HasArea = assert(GameData.WorldCmds.HasArea, "WorldCmds.hasArea missing?")
+	local CoinData = assert(GameData.Directory.Coins, "Directory.Coins missing?")
+	FindFirstChild = CoinsFolder.FindFirstChild
+	local CoinHP, CoinCurrency, World = {}, {}, {}
+	for name, dat in next, GameData.Directory.Coins.__self do
+		CoinHP[name] = rawget(dat, "health")
+		CoinCurrency[name] = rawget(dat, "currencyType")
+		World[name] = rawget(dat, "world")
+	end
+	function GetUnlockedCoins()
+		local coins = {}
+		for id, dat in next, GetCoins() do
+			local coin = CoinData[rawget(dat, "n")]
+			local area = coin and (rawget(dat, "a") or coin.area)
+			if area and FindFirstChild(CoinsFolder, id) and (Libraryflags.ignorearea or coin.world == "Other" or HasArea(area or rawget(dat, "a") or coin.area)) then
+				coins[id] = dat
+			end
+		end
+		return coins
+	end
+	shared.GetUnlockedCoins = GetUnlockedCoins
+	do
+		local table_sort = table.sort
+		local getdist = LP.DistanceFromCharacter
+		function GetSortedCoins()
+			local wanted = {}
+			local checkdist = Libraryflags.checkdistance and Libraryflags.maxcoindistance
+			local checksize = Libraryflags.ignorebigtargets
+			local targeteventcoins = Libraryflags.targeteventcoins
+			for id, dat in next, GetUnlockedCoins() do
+				local coin = FindFirstChild(CoinsFolder, id)
+				if coin then
+					local pos = rawget(dat, "p")
+					local cdist = getdist(LP, pos)
+					local rawcoin = checksize and coin:FindFirstChild("Coin")
+					local csize = rawcoin and rawcoin.Size.Magnitude
+					if checkdist and cdist and (cdist >= checkdist) then
+						--if not checkdist or not cdist or (cdist < checkdist) then
+					else
+						local name = rawget(dat, "n")
+						if not csize or (targeteventcoins and World[name] == "Other") or (csize < (shared.maxcoinsize or 30)) then
+							local hp = CoinHP[name]
+							local t = wanted[hp] or {}
+							wanted[hp] = t
+							t[1 + #t] = {
+								Id = id,
+								Data = dat,
+								MaxHealth = CoinHP[name],
+								Currency = CoinCurrency[name],
+								Position = pos,
+								Dist = cdist,
+								Coin = coin,
+								Pets = rawget(dat, "pets"),
+								Name = name,
+								World = World[name]
+							}
+						end
+					end
+				end
+			end
+			local sorted = {}
+			do
+				local function sort(a, b)
+					return a.Dist < b.Dist
+				end
+				for hp, coins in next, wanted do
+					table_sort(coins, sort)
+					sorted[1 + #sorted] = {hp, coins}
+				end
+			end
+			table_sort(sorted, function(a, b)
+				if Libraryflags.targetselection ~= "Most Health" then
+					a, b = b, a
+				end
+				return a[1] > b[1]
+			end)
+			local coins = {}
+			for _, v in next, sorted do
+				for _, v in next, v[2] do
+					coins[1 + #coins] = v
+				end
+			end
+			return coins
+		end
+		function shared.GetSortedCoins(...)
+			return GetSortedCoins(...)
+		end
+	end
+	NetworkInvoke = GameData.Network.Invoke
+	shared.NetworkInvoke = NetworkInvoke
+	local Owns = GameData.Gamepasses.Owns
+	local gpid = GameData.Directory.Gamepasses["Triple Egg Open"].ID
+	function BuyEgg(EggType)
+		if EggType and EggType ~= "Disabled" then
+			pcall(function()
+				NetworkInvoke("Buy Egg", EggType, Owns(gpid))
+			end)
+		end
+	end
+end
+local PetsiXWindow = Library:CreateWindow({
+	Name = "DreadzHub | PSX OPEN GUIS",
+	Themeable = {
+		Credit = false,
+		Info = {"Guis", "Made By DreadzHub", "COULDN'T PUT THIS IN MY GUI", "BECAUSE IT WAS UNSUPPORTED"}
+	},
+	DefaultTheme = shared.petsixtheme or "{\"__Designer.Colors.main\":\"2BC6FF\"}"
+})
+local FarmingTab = PetsiXWindow:CreateTab({
+	Name = "GUIS"
+})
+local EggSection = FarmingTab:CreateSection({
+	Name = "Guis",
+	Side = "Left"
+})
+local EggSection1 = FarmingTab:CreateSection({
+	Name = "Guis",
+	Side = "Right"
+})
+if OpenGui then
+	local buttons = {
+		["Upgrades"] = true,
+		["Merchant"] = true,
+		["Collection"] = true
+	}
+	shared.buttons = {}
+	local Guis = GameData.GUI
+	for id, dat in next, Guis.__self do
+		if type(dat) == "table" and type(id) == "string" then
+			local spoofed = Guis[id]
+			if spoofed.NoPets ~= nil then
+				local sgui = spoofed.Gui
+				if typeof(sgui) == "Instance" and sgui:IsA("ScreenGui") then
+					buttons[id] = true
+					shared.buttons[id] = Guis[id]
+				end
+			end
+		end
+	end
+	local buttonssorted = {}
+	for k in next, buttons do
+		buttonssorted[1 + #buttonssorted] = {
+			Name = k,
+			Callback = function()
+				pcall(OpenGui, k)
+			end
+		}
+	end
+	table.sort(buttonssorted, function(b, a)
+		return a.Name:lower() > b.Name:lower()
+	end)
+	EggSection:AddButton(unpack(buttonssorted))
+end
+EggSection1:AddButton({
+	Name = "Does Nothing",
+	Callback = function()
+		end
+}, {
+	Name = "Destroy GUI",
+	Callback = Library.unload
+})
