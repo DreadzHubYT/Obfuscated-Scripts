@@ -1,0 +1,134 @@
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Auto-Claim", HidePremium = false, SaveConfig = true, ConfigFolder = "Auto-Claim"})
+local Tab = Window:MakeTab({
+	Name = "Auto-Claim",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local Section = Tab:AddSection({
+	Name = "Auto-Claim"
+})
+Tab:AddToggle({
+	Name = "Auto-Claim Free Gifts",
+	Default = false,
+	Callback = function(Value)
+		getgenv().HEHEHHE = (Value)
+while getgenv().HEHEHHE == true do
+local A_1 = 
+{
+	[1] = 1
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 2
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 3
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 4
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 5
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 6
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 7
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 8
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 9
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 10
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 11
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+local A_1 = 
+{
+	[1] = 12
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem free gift"]
+wait(0.4)
+Event:InvokeServer(A_1)
+end
+	end    
+})
+Tab:AddToggle({
+	Name = "Auto-Claim Rank Rewards",
+	Default = false,
+	Callback = function(Value)
+		getgenv().Reward1 = (Value)
+while getgenv().Reward1 == true do
+local A_1 = 
+{
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem rank rewards"]
+Event:InvokeServer(A_1)
+wait(0.4)
+end
+	end    
+})
+Tab:AddToggle({
+	Name = "Auto-Claim V.I.P Rewards",
+	Default = false,
+	Callback = function(Value)
+				getgenv().Reward11 = (Value)
+while getgenv().Reward11 == true do
+local A_1 = 
+{
+}
+local Event = game:GetService("Workspace")["__THINGS"]["__REMOTES"]["redeem vip rewards"]
+Event:InvokeServer(A_1)
+wait(0.4)
+end
+	end    
+})
+
