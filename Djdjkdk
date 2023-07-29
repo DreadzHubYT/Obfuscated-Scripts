@@ -1,0 +1,519 @@
+local predictioncolor = Color3.fromRGB(255, 255, 255)
+ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/GhostDuckyy/UI-Libraries/main/Slixx's/source.lua"))();
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+lib:SetTitle("DreadzHub | FF2 (Reworked!)")
+
+--Tabs
+local Tab1 = lib:NewTab("Mags", "W Mags For Free :)")
+local Tab2 = lib:NewTab("Offense", "Coming Soon!")
+local Tab3 = lib:NewTab("Defense", "Coming Soon!")
+local Tab4 = lib:NewTab("Misc", "Random Shit")
+--Functions
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local jobId = game.JobId
+local placeId = game.PlaceId
+local PlayerData = game:GetService('HttpService'):JSONEncode(PlayerData)
+local CoreGui = game:GetService("CoreGui")
+local tbl = {}
+
+for i,v in pairs(CoreGui.GetDescendants(CoreGui)) do
+	if v.IsA(v, "ImageLabel") and v.Image:find('rbxasset://') then
+		table.insert(tbl, v.Image)
+	end
+end
+local hello;
+hello = hookfunction(game:GetService("ContentProvider").PreloadAsync, function(self, ...)
+	local Args = {...}
+	if not checkcaller() and type(Args[1]) == "table" and table.find(Args[1], CoreGui) then
+		Args[1] = tbl
+		return hello(self, unpack(Args))
+	end
+	return hello(self, ...)
+end)
+
+local function football(ncm)
+	if ncm == "PreloadAsync" or ncm == "preloadAsync" then
+		return true
+	end
+	return false
+end
+
+local __namecall;
+
+__namecall = hookmetamethod(game, "__namecall", function(Self, ...)
+	local Args = {...}
+	local NamecallMethod = getnamecallmethod()
+	if not checkcaller() and type(Args[1]) == "table" and table.find(Args[1], CoreGui) and Self == game.GetService(game, "ContentProvider") and football(NamecallMethod) then
+		Args[1] = tbl
+		return __namecall(Self, unpack(Args))
+	end
+	return __namecall(Self, ...)
+end)
+wait(.5)
+local Library = {};
+
+local plr = game:GetService('Players').LocalPlayer
+local mouse = plr:GetMouse()
+local Camera = workspace.CurrentCamera;
+local CoreGui = game:GetService("CoreGui")
+local UIS = game:GetService("UserInputService");
+local RS = game:GetService("RunService");
+local TS = game:GetService("TweenService");
+local spr = RS:IsStudio() and require(workspace.spr) or loadstring(game:HttpGet("https://raw.githubusercontent.com/PhoenixxDev/SprForSyn/main/spr.lua"))()
+getgenv().Variables = {}
+Variables.Players = game:GetService("Players")
+Variables.ReplicatedStorage = game:GetService("ReplicatedStorage")
+Variables.UserInputService = game:GetService("UserInputService")
+Variables.Client = Variables.Players.LocalPlayer
+Variables.Character = Variables.Client.Character or Variables.Client.CharacterAdded:Wait()
+Variables.Client.CharacterAdded:Connect(function(Character)
+    Variables.Character = Character 
+end)
+local player = game.Players.LocalPlayer
+local rs = game:GetService("RunService")
+function magBall(ball)
+   if ball and player.Character then
+       firetouchinterest(player.Character["Left Arm"], ball, 0)
+       firetouchinterest(player.Character["Right Arm"], ball, 0)
+       task.wait()
+       firetouchinterest(player.Character["Left Arm"], ball, 1)
+       firetouchinterest(player.Character["Right Arm"], ball, 1)
+   end
+end
+_G.Colors = Color3.fromRGB(0,255,0)
+_G.CheckingTool = false
+local Playeer = game.Players.LocalPlayer
+     getgenv().check = nil
+     function maggy()
+        spawn(function()
+        for i2, v2 in pairs(game:GetService("Workspace"):GetChildren()) do
+            if v2.Name == "Football" then
+                local closestDis = nil
+                local hitBox = game.Players.LocalPlayer.Character.CatchLeft
+                local hitBox2 = game.Players.LocalPlayer.Character.CatchRight
+                local mag = (game.Players.LocalPlayer.Character.CatchLeft.Position - v2.Position).magnitude
+                getgenv().check = mag
+        if  mag <= 20 then
+            v2.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(2,2,2)
+        firetouchinterest(hitBox, v2, 0)
+        firetouchinterest(hitBox2, v2, 0)
+        task.wait()
+        firetouchinterest(hitBox, v2, 1)  
+        firetouchinterest(hitBox2, v2, 1)
+            end
+        end
+        end
+        end)
+        end
+local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local remotes = replicatedStorage:FindFirstChild("Remotes")
+local characterSoundEvent = remotes:FindFirstChild("CharacterSoundEvent")
+local player = players.LocalPlayer
+local runService = game:GetService("RunService")
+
+local blatant = 0
+local universal = 0
+local uis = game:GetService("UserInputService")
+local uniDelay = 0
+local regDelay = 0
+
+-- Functions
+
+local Players = game:GetService("Players")
+local Mouse = Players.LocalPlayer:GetMouse()
+local numTeleports = 30 -- Define the number of teleports
+local tooggleEnabled = false -- Variable to track the toggle state
+
+local function universalcatch()
+	if tooggleEnabled then
+		local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
+
+		if not catchRight then
+			return
+		end
+
+		local closestFootball = nil
+		local closestDistance = math.huge
+
+		for i, v in pairs(game.Workspace:GetDescendants()) do
+			if v.Name == "Football" and v:IsA("BasePart") then
+				local distance = (v.Position - catchRight.Position).Magnitude
+				if distance < closestDistance and distance <= universal then
+					v.CanCollide = false
+					closestDistance = distance
+					closestFootball = v
+				end
+			end
+		end
+
+		if closestFootball then
+				wait(uniDelay)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 0)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+			firetouchinterest(game.Players.LocalPlayer.Character["CatchRight"], closestFootball, 1)
+			task.wait()
+		end
+	end
+end
+
+local regtog = false -- Variable to track the toggle state
+
+local function teleportToClosestFootball()
+	if regtog == true then
+		task.wait()
+		uis.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				local catchRight = Players.LocalPlayer.Character:FindFirstChild("CatchRight")
+
+				if not catchRight then
+					return
+				end
+
+				local closestFootball = nil
+				local closestDistance = math.huge
+
+				for i, v in pairs(game.Workspace:GetDescendants()) do
+					if v.Name == "Football" and v:IsA("BasePart") then
+						local distance = (v.Position - catchRight.Position).Magnitude
+						if distance < closestDistance and distance <= blatant then
+							v.CanCollide = false
+							closestDistance = distance
+							closestFootball = v
+						end
+					end
+				end
+
+				-- Teleport the closest football if found
+				if closestFootball then
+					for _ = 1, numTeleports do
+						if regtog == true then
+							wait(regDelay)
+							local tweenService = game:GetService("TweenService")
+							local tweenInfo = TweenInfo.new(.05, Enum.EasingStyle.Linear)
+							tweenService:Create(closestFootball, tweenInfo, {CFrame = catchRight.CFrame}):Play()
+							wait(.05)
+						end
+					end
+				end
+			end
+		end)
+	end
+end
+
+local function beamProjectile(g, v0, x0, t1) -- easy egomoose copy!
+	-- calculate the bezier points
+	local c = 0.5*0.5*0.5;
+	local p3 = 0.5*g*t1*t1 + v0*t1 + x0;
+	local p2 = p3 - (g*t1*t1 + v0*t1)/3;
+	local p1 = (c*g*t1*t1 + 0.5*v0*t1 + x0 - c*(x0+p3))/(3*c) - p2;
+
+	-- the curve sizes
+	local curve0 = (p1 - x0).magnitude;
+	local curve1 = (p2 - p3).magnitude;
+
+	-- build the world CFrames for the attachments
+	local b = (x0 - p3).unit;
+	local r1 = (p1 - x0).unit;
+	local u1 = r1:Cross(b).unit;
+	local r2 = (p2 - p3).unit;
+	local u2 = r2:Cross(b).unit;
+	b = u1:Cross(r1).unit;
+
+	local cf1 = CFrame.new(
+		x0.x, x0.y, x0.z,
+		r1.x, u1.x, b.x,
+		r1.y, u1.y, b.y,
+		r1.z, u1.z, b.z
+	)
+
+	local cf2 = CFrame.new(
+		p3.x, p3.y, p3.z,
+		r2.x, u2.x, b.x,
+		r2.y, u2.y, b.y,
+		r2.z, u2.z, b.z
+	)
+
+	return curve0, -curve1, cf1, cf2;
+end
+--Shit Script Initiated
+Tab1:NewToggle("Universal Mags",false,function(v)
+tooggleEnabled = v
+	while tooggleEnabled == true do
+		task.wait()
+		universalcatch()
+	end
+end)
+Tab1:NewToggle("Blatant Mags",false,function(s)
+    getgenv().AutoCatchBall = s
+            while AutoCatchBall == true do
+            wait()
+            maggy() 
+        end
+end)
+Tab1:NewToggle("Long Arms",false,function(bool)
+    		_G.CheckingTool = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Left Arm'])
+Highlight.Enabled = bool
+Highlight = Instance.new("Highlight", Playeer.Character['Right Arm'])
+Highlight.Enabled = bool
+getgenv().jjj = bool
+if getgenv().jjj == true then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Left Arm'].Transparency = .999
+Playeer.Character['Right Arm'].Transparency = .999
+elseif getgenv().jjj == false then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, 2, 1)
+Playeer.Character['Left Arm'].Transparency = 0
+Playeer.Character['Right Arm'].Transparency = 0
+end
+end)
+Tab1:NewButton("Configuration",function()
+end)
+Tab1:NewSlider("Blatant Mags Strength",5,60,15,function(s)
+getgenv().check = s
+end)
+Tab1:NewSlider("Universal Mags Strength",5,30,15,function(v)
+universal = v
+end)
+Tab1:NewSlider("Long Arms Strength",1,20,20,function(g)
+_G.Arms = g
+if _G.CheckingTool == true then
+Playeer.Character['Left Arm'].Size = Vector3.new(1, _G.Arms, 1)
+Playeer.Character['Right Arm'].Size = Vector3.new(1, _G.Arms, 1)
+elseif _G.CheckingTool == false then
+
+end
+end)
+local PlayerW = game.Players.LocalPlayer
+Tab4:NewButton("Anti-OOB",function()
+local bounds = game.Workspace.Models:FindFirstChild("Boundaries")
+bounds:ClearAllChildren()
+OrionLib:MakeNotification({
+	Name = "Executed!",
+	Content = "Executed No Bounds, "..PlayerW.Name.."!",
+	Image = "rbxassetid://4483345998",
+	Time = 3
+})
+end)
+Tab4:NewToggle("Ball Land Prediction",false,function(v)
+    if v and not toggleActive then
+		toggleActive = true
+		eventConnection = workspace.ChildAdded:Connect(function(b)
+			if b.Name == "Football" and b:IsA("BasePart") then
+				task.wait()
+				local vel = b.Velocity
+				local pos = b.Position
+				local c0, c1, cf1, cf2 = beamProjectile(Vector3.new(0, -28, 0), vel, pos, 10)
+				local beam = Instance.new("Beam")
+				local a0 = Instance.new("Attachment")
+				local a1 = Instance.new("Attachment")
+				beam.Color = ColorSequence.new(predictioncolor)
+				beam.Transparency = NumberSequence.new(0, 0)
+				beam.CurveSize0 = c0
+				beam.CurveSize1 = c1
+				beam.Name = "Hitbox"
+				beam.Parent = workspace.Terrain
+				beam.Transparency = NumberSequence.new({
+					NumberSequenceKeypoint.new(0, 1),
+					NumberSequenceKeypoint.new(0.01, 0),
+					NumberSequenceKeypoint.new(1, 0),
+					NumberSequenceKeypoint.new(1, 0.01),
+				})
+				beam.Segments = 1750
+				a0.Parent = workspace.Terrain
+				a1.Parent = workspace.Terrain
+				a0.CFrame = a0.Parent.CFrame:Inverse() * cf1
+				a1.CFrame = a1.Parent.CFrame:Inverse() * cf2
+				beam.Attachment0 = a0
+				beam.Attachment1 = a1
+				beam.Width0 = 0.5
+				beam.Width1 = 0.5
+				repeat task.wait() until b.Parent ~= workspace
+				a0:Destroy()
+				a1:Destroy()
+			end
+		end)
+	elseif not Value and toggleActive then
+		toggleActive = false
+		if eventConnection then
+			eventConnection:Disconnect()
+		end
+	end
+end)
+Tab4:NewToggle("Underground",false,function(v)
+   state = v
+	local transparency = state and 0.5 or 0
+	local model = game:GetService("Workspace").Models.Field.Grass
+	for _, part in pairs(model:GetDescendants()) do
+		if part:IsA("BasePart") then
+			part.CanCollide = not state
+			part.Transparency = transparency
+		end
+	end
+	if state then
+		local part = Instance.new("Part")
+		part.Size = Vector3.new(500, 0.001, 500)
+		part.CFrame = CFrame.new(Vector3.new(10.3562937, -1.51527438, 30.4708614))
+		part.Anchored = true
+		part.Parent = game.Workspace
+
+		local Anim = Instance.new("Animation")
+		Anim.AnimationId = "rbxassetid://182724289"
+		track = game.Players.LocalPlayer.Character.Humanoid:LoadAnimation(Anim)
+		track:Play(.1, 1, 1)
+	else
+
+		if track ~= nil then
+			track:Stop()
+		end
+	end
+ 
+end)
+local players = get "Players"
+local ws = get "Workspace"
+local rs = get "ReplicatedStorage"
+local rus = get "RunService"
+local uis = get "UserInputService"
+local coregui = get "CoreGui"
+local http = get "HttpService"
+local ts = get "TeleportService"
+local lighting = get "Lighting"
+local plr = players.LocalPlayer
+local char = (plr and (plr.Character or plr.CharacterAdded:Wait()) or nil)
+local hrp = plr and (char:WaitForChild "HumanoidRootPart") or nil
+local hum = plr and (char:WaitForChild "Humanoid") or nil
+if plr then
+    plr.CharacterAdded:Connect(
+        function(c)
+            char = c
+            hrp = c:WaitForChild "HumanoidRootPart"
+            hum = c:WaitForChild "Humanoid"
+        end
+    )
+Tab4:NewToggle("Auto TP To Endzone",false,function(value)
+   getgenv().Col = value
+if getgenv().Col == true then
+if char:FindFirstChild("Football") then
+local Teleport1 = function(XP, YP, ZP)
+			local XTpEvery = 8
+			local YTpEvery = 1
+			local ZTpEvery = 8
+			local Timer = 0.2
+			local pos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+			if pos.Position.X < XP then
+				for x = pos.Position.X, XP, XTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			else
+				for x = pos.Position.X, XP, -XTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(x, pos.Position.Y, pos.Position.Z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			end
+			if pos.Position.Z < ZP then
+				for z = pos.Position.Z, ZP, ZTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			else
+				for z = pos.Position.Z, ZP, -ZTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, pos.Position.Y, z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			end
+			if pos.Position.Y < YP then
+				for High = pos.Position.Y, YP, YTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			else
+				for High = pos.Position.Y, YP, -YTpEvery do
+					game.Players.LocalPlayer.Character:MoveTo(Vector3.new(pos.Position.X, High, pos.Position.Z))
+					local part = Instance.new("Part", workspace)
+					part.Anchored = true
+					part.Size = Vector3.new(10, 0.1, 10)
+					part.Material = "Glass"
+					part.BrickColor = BrickColor.Random()
+					part.Transparency = 1
+					part.Position = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, -3.05, 0)
+					wait(Timer)
+					part:Destroy()
+				end
+			end
+			game.Players.LocalPlayer.Character:MoveTo(Vector3.new(XP, YP, ZP))
+		end
+	
+		Teleport1(-0, 6, 164)
+end
+end)
+end)
+Tab4:NewButton("Configuration",function()
+end)
+Tab4:NewDropdown("Predictor Colors",{"White","Blue","Red","Pink","Green"},"White",function(v)
+	if v == "White" then
+		predictioncolor = Color3.fromRGB(255, 255, 255)
+	elseif v == "Blue" then
+		predictioncolor = Color3.fromRGB(0, 212, 255)
+	elseif v == "Pink" then
+		predictioncolor = Color3.fromRGB(253, 137, 245)
+	elseif v == "Red" then
+		predictioncolor = Color3.fromRGB(255, 0, 0)
+	elseif v == "Green" then
+		predictioncolor = Color3.fromRGB(0, 255, 115)
+	end
+end)
+
+--Notification
+OrionLib:MakeNotification({
+	Name = "DreadzHub!",
+	Content = "DreadzHub Loaded!",
+	Image = "rbxassetid://4483345998",
+	Time = 3
+})
